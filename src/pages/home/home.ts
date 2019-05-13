@@ -10,13 +10,42 @@ import { SQLite, SQLiteObject } from '@ionic-native/sqlite';
 })
 export class HomePage {
 
-  constructor(public navCtrl: NavController, public sqlite: SQLite) {
+  entries = [];
 
+  constructor(public navCtrl: NavController, public sqlite: SQLite) {
+  }
+
+  ionViewDidEnter(){
+    this.loadEntry();
   }
 
   addEntry() {
     console.log('Adicionar lançamento');
     this.navCtrl.push(NewEntryPage);
+  }
+
+  loadEntry() {
+    console.log('Inicio de Teste DB');
+    this.sqlite.create({
+      name: 'data.db',
+      location: 'default'
+    })
+      .then((db: SQLiteObject) => {
+
+        const sql = "SELECT * FROM entries";
+        const data = [];
+        db.executeSql(sql, data)
+          .then((values: any) => {
+            let data;
+            this.entries = [];
+            for(var i = 0; i < values.rows.length; i++) {
+              data = values.rows.item(i);
+              this.entries.push(data);
+            }            
+          })
+          .catch(e => console.error('erro ao realizar select', JSON.stringify(e)));
+
+      });
   }
 
 
