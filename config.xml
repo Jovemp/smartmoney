@@ -3,7 +3,7 @@
     <name>Smart Money</name>
     <description>Aplicativo de estudo do curso.</description>
     <author email="jovemp@hotmail.com" href="">Paulo Edson Estevam de Sousa</author>
-    <content original-src="index.html" src="http://192.168.0.14:8101" />
+    <content src="index.html" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
