@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
-import { SQLite, SQLiteObject } from '@ionic-native/sqlite';
+import { CategoryDaoProvider } from '../../providers/category-dao/category-dao';
+import { AccountProvider } from '../../providers/account/account';
+
 
 @IonicPage()
 @Component({
@@ -9,6 +11,7 @@ import { SQLite, SQLiteObject } from '@ionic-native/sqlite';
   templateUrl: 'new-entry.html',
 })
 export class NewEntryPage {
+  categories = [];
   entryForm: FormGroup;
 
   entry = {}
@@ -16,7 +19,8 @@ export class NewEntryPage {
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     private builder: FormBuilder,
-    public sqlite: SQLite) {
+    public categoryDao: CategoryDaoProvider,
+    public account: AccountProvider) {
     this.entryForm = builder.group({
       amount: new FormControl('', Validators.compose([Validators.required])),
       category_id: new FormControl('', Validators.required)
@@ -24,7 +28,7 @@ export class NewEntryPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad NewEntryPage');
+    this.loadData();
   }
 
   submitForm() {
@@ -43,26 +47,14 @@ export class NewEntryPage {
 
   insertBD() {
     console.log('Inicio da gravação do BD');
-
-    this.sqlite.create({
-      name: 'data.db',
-      location: 'default'
-    })
-      .then((db: SQLiteObject) => {
-        console.log('Banco criando com sucesso!');
-        db.sqlBatch([
-          "create table if not exists entries (id integer primary key autoincrement, amount decimal, description text)"
-        ])
-          .then(() => {
-            const sqlInsert = "insert into entries (amount) values (?)";
-            const dataInsert = [this.entry['amount']];
-
-            db.executeSql(sqlInsert, dataInsert)
-              .then(() => console.log('insert realizado com sucesso'))
-              .catch(e => console.error('erro ao inserir', JSON.stringify(e)));
-          })
-          .catch(e => console.error('erro ao criar a tabela', JSON.stringify(e)))
-      })
+    this.account.addEntry(this.entry['amount'], this.entry['category_id'])      
+      .then(() => console.log('insert realizado com sucesso'))
   }
 
+  loadData() {
+    this.categoryDao.getAll()
+      .then((categories: any[]) => {
+        this.categories = categories;
+      })
+  }
 }

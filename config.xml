@@ -3,7 +3,7 @@
     <name>Smart Money</name>
     <description>Aplicativo de estudo do curso.</description>
     <author email="jovemp@hotmail.com" href="">Paulo Edson Estevam de Sousa</author>
-    <content original-src="index.html" src="http://192.168.1.28:8100" />
+    <content src="index.html" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
@@ -83,5 +83,4 @@
     <plugin name="cordova-plugin-ionic-webview" spec="^4.0.0" />
     <plugin name="cordova-plugin-ionic-keyboard" spec="^2.0.5" />
     <allow-navigation href="http://192.168.0.14:8101" sessionid="a7f7a309" />
-    <allow-navigation href="http://192.168.1.28:8100" sessionid="834bdc08" />
 </widget>

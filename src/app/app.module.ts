@@ -9,6 +9,10 @@ import { SQLite } from '@ionic-native/sqlite';
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 import { NewEntryPageModule } from '../pages/new-entry/new-entry.module';
+import { DatabaseProvider } from '../providers/database/database';
+import { EntryDaoProvider } from '../providers/entry-dao/entry-dao';
+import { CategoryDaoProvider } from '../providers/category-dao/category-dao';
+import { AccountProvider } from '../providers/account/account';
 
 @NgModule({
   declarations: [
@@ -29,7 +33,11 @@ import { NewEntryPageModule } from '../pages/new-entry/new-entry.module';
     StatusBar,
     SplashScreen,
     SQLite,
-    {provide: ErrorHandler, useClass: IonicErrorHandler}
+    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    DatabaseProvider,
+    EntryDaoProvider,
+    CategoryDaoProvider,
+    AccountProvider
   ]
 })
 export class AppModule {}
