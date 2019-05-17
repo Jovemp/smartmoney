@@ -13,6 +13,7 @@ import { AccountProvider } from '../../providers/account/account';
 export class NewEntryPage {
   categories = [];
   entryForm: FormGroup;
+  currentBalance: number = 0;
 
   entry = {}
 
@@ -55,6 +56,9 @@ export class NewEntryPage {
     this.categoryDao.getAll()
       .then((categories: any[]) => {
         this.categories = categories;
-      })
+      });
+    this.account
+      .loadBalance()
+        .then((balance) => this.currentBalance = balance);
   }
 }

@@ -8,11 +8,14 @@ import { SQLite } from '@ionic-native/sqlite';
 
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
+
 import { NewEntryPageModule } from '../pages/new-entry/new-entry.module';
 import { DatabaseProvider } from '../providers/database/database';
 import { EntryDaoProvider } from '../providers/entry-dao/entry-dao';
 import { CategoryDaoProvider } from '../providers/category-dao/category-dao';
 import { AccountProvider } from '../providers/account/account';
+
+import { ComponentsModule } from '../components/components.module';
 
 @NgModule({
   declarations: [
@@ -22,6 +25,7 @@ import { AccountProvider } from '../providers/account/account';
   imports: [
     BrowserModule,
     NewEntryPageModule, 
+    ComponentsModule,
     IonicModule.forRoot(MyApp)
   ],
   bootstrap: [IonicApp],

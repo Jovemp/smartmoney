@@ -1,23 +1,10 @@
 balance-panel {
-    padding: 0;
-}
+    .balance-panel-container {
+        background: linear-gradient(to bottom, color($colors, violet) -30%, color($colors, blue) 110%);
+        color: color($colors, white);
+        height: 30vh;
 
-page-home {
-    
-
-    /*.balance-panel-container {
-        background: linear-gradient(to bottom, color($colors, violet) -30%, color($colors));
         padding: 3rem 0 0;
-
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-
-        box-shadow: 0 5px 5px rgba(color($colors, black), .2);
-
-        height: 25vh;
-        z-index: 999;
 
         .balance-panel-label {
             position: relative;
@@ -37,16 +24,9 @@ page-home {
             margin: 0;
             padding: 0;
         }
-        .balance-panel-chart {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-        }
 
         ion-fab[top]{
-            top: 20.5vh;
+            top: 25.5vh;
         }
-    }*/
-
+    }
 }
