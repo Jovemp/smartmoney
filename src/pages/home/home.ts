@@ -4,6 +4,8 @@ import { NavController } from 'ionic-angular';
 import { NewEntryPage } from '../new-entry/new-entry';
 import { AccountProvider } from '../../providers/account/account';
 
+import { Chart } from 'chart.js';
+
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html'
