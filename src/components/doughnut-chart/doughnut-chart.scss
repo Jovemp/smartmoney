@@ -47,7 +47,7 @@ doughnut-chart {
     
             &:before {
               content: '\25CF';
-              font-size: 32px;
+              font-size: 25px;
               line-height: .7;
               text-shadow: 0 0 8px color($colors, asphalt-dark);
               margin-right: 3px;
@@ -56,7 +56,7 @@ doughnut-chart {
     
           .chart-legend-label-text,
           .chart-legend-label-value {
-            font-size: 1.5rem !important;
+            font-size: 1.2rem !important;
           }
     
           .chart-legend-label-value {

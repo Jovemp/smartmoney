@@ -1,5 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { Chart } from 'chart.js';
+import { CurrencyPipe, PercentPipe } from '@angular/common';
 
 @Component({
   selector: 'doughnut-chart',
@@ -11,9 +12,12 @@ export class DoughnutChartComponent {
 
   chart: any;
 
-  constructor() {}
+  constructor() { }
 
   ngOnInit() {
+    //const currencyPipe = new CurrencyPipe('pt-US');
+    //const percentPipe = new PercentPipe('pt-US');
+
     const colors = {
       backgroundColor: [
         'rgba(26, 188, 156, 0.8)',
@@ -40,7 +44,7 @@ export class DoughnutChartComponent {
       data: {
         labels: ['Alimentacao', 'Combustivel', 'Garagem', 'Lazer', 'Outros'],
         datasets: [{
-          data:[12.34, 140, 30, 55, 20],
+          data: [12.34, 140, 30, 55, 20],
           backgroundColor: colors.backgroundColor,
           hoverBackgroundColor: colors.hoverBackgroundColor,
           borderColor: '#34495e',
@@ -52,7 +56,7 @@ export class DoughnutChartComponent {
         maintainAspectRatio: false,
         cotoutPercentage: 80,
         legend: false,
-        legendCallback: function(chart) {
+        legendCallback: function (chart) {
           let legendHtml = [];
           let item = chart.data.datasets[0];
 
@@ -60,7 +64,7 @@ export class DoughnutChartComponent {
 
           for (let i = 0; i < item.data.length; i++) {
             //let value = currencyPipe.transform(item.data[i]);
-             let value = '$' + item.data[i];
+            let value = '$' + item.data[i];
 
             legendHtml.push('<li>');
             legendHtml.push(`<span class="chart-legend-bullet" style="color:${item.backgroundColor[i]}"></span>`);
@@ -72,6 +76,25 @@ export class DoughnutChartComponent {
           legendHtml.push('</ul>');
 
           return legendHtml.join("");
+        },
+        tooltips: {
+          enabled: true,
+          mode: 'single',
+          fontSize: 14,
+          fontColor: '#3b3a3e',
+          fontFamily: 'Roboto',
+          callbacks: {
+            title: function (tooltipItem, data) { return data.labels[tooltipItem[0].index]; },
+            label: function (tooltipItem, data) {
+              const amount = parseFloat(data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index]);
+              const total = parseFloat(eval(data.datasets[tooltipItem.datasetIndex].data.join("+")));
+              //const percent = percentPipe.transform((amount / total));
+              const percent = (amount / total) *100;
+
+              return percent;
+            },
+            // footer: function(tooltipItem, data) { return 'Total: 100 planos.'; }
+          }
         }
       }
     });
