@@ -1,0 +1,9 @@
+<div class="balance-panel-container">
+    <h2 class="balance-panel-label">Saldo atual</h2>
+    <h3 class="balance-panel-value">{{ currentBalance | currency }}</h3>
+    <div class="balance-panel-chart">
+    </div>
+    <ion-fab top right>
+      <button color="secondary" ion-fab larger (click)="addEntryEvento($event)"><ion-icon name="add"></ion-icon></button>
+    </ion-fab>
+  </div>

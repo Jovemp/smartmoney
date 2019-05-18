@@ -1,26 +1,5 @@
-<ion-header>
-  <ion-navbar>
-    <ion-title>
-      Smart Money
-    </ion-title>
-  </ion-navbar>
-</ion-header>
-
-<ion-content padding>
-  <h1>Saldo: $2.201,45</h1>
-  <button (click)="addEntry()">Adicionar</button>
-  <button (click)="testeDB()">Teste DB</button>
-  <h3>Categorias</h3>
-  <ul>
-    <li>Alimentação: $200</li>
-    <li>Combustivel: $12</li>
-    <li>Aluguel: $120</li>
-  </ul>
-
-  <h3>Últimos lançamentos</h3>
-  <ol>
-    <li>Padaria Asa: $10</li>
-    <li>Supermercado Isadora: $190</li>
-    <li>Posto Ipiranga: $12</li>
-  </ol>
+<ion-content>
+  <balance-panel [currentBalance]="currentBalance" (addEntry)="addEntry()"></balance-panel>
+  <entry-summary></entry-summary>
+  <entry-list [entries]="entries"></entry-list>
 </ion-content>
