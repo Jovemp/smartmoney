@@ -5,13 +5,15 @@ import { EntrySummaryComponent } from './entry-summary/entry-summary';
 import { EntryListComponent } from './entry-list/entry-list';
 import { BalanceLabelComponent } from './balance-label/balance-label';
 import { DoughnutChartComponent } from './doughnut-chart/doughnut-chart';
+import { BalancePanelChartComponent } from './balance-panel-chart/balance-panel-chart';
 
 @NgModule({
 	declarations: [BalancePanelComponent,
     EntrySummaryComponent,
     EntryListComponent,
     BalanceLabelComponent,
-    DoughnutChartComponent],
+    DoughnutChartComponent,
+    BalancePanelChartComponent],
 	imports: [
 		IonicPageModule
 	],
@@ -19,6 +21,7 @@ import { DoughnutChartComponent } from './doughnut-chart/doughnut-chart';
     EntrySummaryComponent,
     EntryListComponent,
     BalanceLabelComponent,
-    DoughnutChartComponent]
+    DoughnutChartComponent,
+    BalancePanelChartComponent]
 })
 export class ComponentsModule {}
