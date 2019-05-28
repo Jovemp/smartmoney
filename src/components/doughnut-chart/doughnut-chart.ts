@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, Input } from '@angular/core';
 import { Chart } from 'chart.js';
 import { CurrencyPipe, PercentPipe } from '@angular/common';
 
@@ -7,16 +7,27 @@ import { CurrencyPipe, PercentPipe } from '@angular/common';
   templateUrl: 'doughnut-chart.html'
 })
 export class DoughnutChartComponent {
+  @Input() entries = [];
   @ViewChild('chartCanvas') chartCanvas;
   @ViewChild('chartLegend') chartLegend;
+
+  labels = [];
+  data = [];
+  colors = [];
 
   chart: any;
 
   constructor() { }
 
-  ngOnInit() {
+  ngOnChanges() {
     //const currencyPipe = new CurrencyPipe('pt-US');
     //const percentPipe = new PercentPipe('pt-US');
+
+    if (this.entries) {
+      this.labels = this.entries.map(item => item.category_name);
+      this.colors = this.entries.map(item => item.category_color);
+      this.data = this.entries.map(item => item.balance);
+    }
 
     const colors = {
       backgroundColor: [
@@ -42,11 +53,11 @@ export class DoughnutChartComponent {
     this.chart = new Chart(this.chartCanvas.nativeElement, {
       type: 'doughnut',
       data: {
-        labels: ['Alimentacao', 'Combustivel', 'Garagem', 'Lazer', 'Outros'],
+        labels: this.labels,
         datasets: [{
-          data: [12.34, 140, 30, 55, 20],
-          backgroundColor: colors.backgroundColor,
-          hoverBackgroundColor: colors.hoverBackgroundColor,
+          data: this.data,
+          backgroundColor: this.colors,
+          hoverBackgroundColor: this.colors,
           borderColor: '#34495e',
           borderWidth: 3
         }]

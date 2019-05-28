@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 /**
  * Generated class for the EntrySummaryComponent component.
@@ -11,12 +11,8 @@ import { Component } from '@angular/core';
   templateUrl: 'entry-summary.html'
 })
 export class EntrySummaryComponent {
-
-  text: string;
-
+  @Input() entries = [];  
   constructor() {
-    console.log('Hello EntrySummaryComponent Component');
-    this.text = 'Hello World';
   }
 
 }

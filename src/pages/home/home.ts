@@ -13,6 +13,7 @@ import { Chart } from 'chart.js';
 export class HomePage {
 
   entries = [];
+  entriesByCategory = [];
   currentBalance = 0;
 
   constructor(public navCtrl: NavController, public account: AccountProvider) {
@@ -25,6 +26,7 @@ export class HomePage {
   private loadData() {
     this.loadBalance();
     this.loadEntry();
+    this.loadBalancesByCategory();
   }
 
   addEntry() {
@@ -38,6 +40,11 @@ export class HomePage {
         this.entries = values;
       })
       .catch(e => console.error('erro ao realizar select', JSON.stringify(e)));
+  }
+
+  private loadBalancesByCategory(){
+    this.account.lastEntriesByCategory()
+      .then((data: any) => this.entriesByCategory = data)
   }
 
   private loadBalance() {

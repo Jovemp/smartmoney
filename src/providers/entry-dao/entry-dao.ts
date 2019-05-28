@@ -57,6 +57,33 @@ export class EntryDaoProvider {
       .catch(e => console.error('erro ao get', JSON.stringify(e)));
   }
 
+  getByCategory() {
+    const sql = "select c.name AS category_name, c.color AS category_color, SUM(e.amount) AS balance \
+                 from entries e \
+                 INNER JOIN categories c ON (e.category_id = c.id) \
+                 group by category_name, category_color \
+                 order by balance desc";
+    const data = [];
+
+    return this, this.database.db
+      .executeSql(sql, data)
+      .then((data: any) => {
+        if (data.rows.length > 0) {
+          let entries: any[] = [];
+
+          for (var i = 0; i < data.rows.length; i++) {
+            const item = data.rows.item(i);
+            entries.push(item);
+          }
+          return entries;
+        }
+        return [];
+      })
+      .catch(e => console.error('erro ao getByCategory', JSON.stringify(e)));
+  }
+
+  
+
   getAll() {
     const sql = "select * from entries order by entry_at";
     const data = [];
@@ -73,7 +100,7 @@ export class EntryDaoProvider {
           }
           return entries;
         }
-        return null;
+        return [];
       })
       .catch(e => console.error('erro ao getAll', JSON.stringify(e)));
   }
