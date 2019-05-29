@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, Input } from '@angular/core';
 
 import { Chart } from 'chart.js';
 
@@ -8,24 +8,35 @@ import { Chart } from 'chart.js';
 })
 export class BalancePanelChartComponent {
   @ViewChild('chartCanvas') chartCanvas;
+  @Input() entries = [];
+
+  labels = [];
+  data = [];
 
   chart: any;
   
   constructor() {
   }
 
-  ngOnInit() {
+  ngOnChanges() {
+
+    console.log(JSON.stringify(this.entries));
+    if (this.entries) {
+      this.labels = this.entries.map(item => item.entry_date);
+      this.data = this.entries.map(item => item.balance);
+    }
+
     this.chart = new Chart(this.chartCanvas.nativeElement, {
       type: 'line',
       data: {
-        labels: ['D7', 'D6', 'D5', 'D4', 'D3', 'D2', 'D1'],
+        labels: this.labels,
         datasets: [{
           backgroundColor: 'rgba(41, 128, 185, 0.2)',
           borderColor: '#2573a6',
           borderWidth: 1.5,
           pointRadius: 0,
           lineTension: 0,
-          data: [10, 2, 3, 7, 5, 6, 7],
+          data: this.data,
           fill: true
         }]
       },

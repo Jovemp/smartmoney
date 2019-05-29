@@ -9,6 +9,7 @@ export class BalancePanelComponent {
 
   text: string;
   @Input() currentBalance: number;
+  @Input() entries = [];
   @Output() addEntry = new EventEmitter();
 
   constructor() {

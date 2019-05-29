@@ -23,6 +23,10 @@ export class AccountProvider {
     return this.entryDao.getByCategory();
   }
 
+  lastEntriesByDate() {
+    return this.entryDao.getByDate();
+  }
+
   addEntry(amount, category_id) {
     this.balance += Number(amount);
 

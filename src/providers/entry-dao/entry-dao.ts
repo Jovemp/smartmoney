@@ -9,7 +9,7 @@ export class EntryDaoProvider {
 
   insert(amount, category_id) {
     const sqlInsert = "insert into entries (amount, entry_at, category_id) values (?, ?, ?)";
-    const dataInsert = [amount, 1, category_id];
+    const dataInsert = [amount, DatabaseProvider.now(), category_id];
 
     return this.database.db.executeSql(sqlInsert, dataInsert)
       .catch(e => console.error('erro ao inserir', JSON.stringify(e)));
@@ -63,6 +63,33 @@ export class EntryDaoProvider {
                  INNER JOIN categories c ON (e.category_id = c.id) \
                  group by category_name, category_color \
                  order by balance desc";
+    const data = [];
+
+    return this, this.database.db
+      .executeSql(sql, data)
+      .then((data: any) => {
+        if (data.rows.length > 0) {
+          let entries: any[] = [];
+
+          for (var i = 0; i < data.rows.length; i++) {
+            const item = data.rows.item(i);
+            entries.push(item);
+          }
+          return entries;
+        }
+        return [];
+      })
+      .catch(e => console.error('erro ao getByCategory', JSON.stringify(e)));
+  }
+
+
+  getByDate() {
+    const sql = "select c.name AS category_name, c.color AS category_color, SUM(e.amount) AS balance, \
+                        strftime('%Y-%m-%d', entry_at) as entry_date \
+                 from entries e \
+                 INNER JOIN categories c ON (e.category_id = c.id) \
+                 group by entry_date \
+                 order by entry_date desc";
     const data = [];
 
     return this, this.database.db

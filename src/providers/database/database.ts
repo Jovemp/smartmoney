@@ -71,4 +71,48 @@ export class DatabaseProvider {
     .catch(e => console.error('error on drop tables', JSON.stringify(e)));
   }
 
+  static now(days = 0, midnight = false) {
+    // isn't working in this SQLITE due locale
+
+    const date = new Date();
+    let dd, mm, y, h, m, s;
+
+    if (days != 0) {
+      let newDate = new Date(date);
+      newDate.setDate(newDate.getDate() + days);
+
+      dd = newDate.getDate();
+      mm = newDate.getMonth() + 1;
+      y = newDate.getFullYear();
+      h = newDate.getHours();
+      m = newDate.getMinutes();
+      s = newDate.getSeconds();
+    }
+    else {
+      dd = date.getDate();
+      mm = date.getMonth() + 1;
+      y = date.getFullYear();
+      h = date.getHours();
+      m = date.getMinutes();
+      s = date.getSeconds();
+    }
+
+    if(midnight) {
+      h = 0;
+      m = 0;
+      s = 0;
+    }
+
+    let res = [
+      '' + y,
+      ('0' + mm).slice(-2),
+      ('0' + dd).slice(-2),
+      ('0' + h).slice(-2),
+      ('0' + m).slice(-2),
+      ('0' + s).slice(-2)
+    ];
+
+    return res.slice(0, 3).join('-') + ' ' + res.slice(3).join(':');
+  }
+
 }
