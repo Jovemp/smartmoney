@@ -57,16 +57,22 @@ export class EntryDaoProvider {
       .catch(e => console.error('erro ao get', JSON.stringify(e)));
   }
 
-  getByCategory() {
-    const sql = "select c.name AS category_name, c.color AS category_color, SUM(e.amount) AS balance \
+  getByCategory(criteria = '', data = []) {
+    let sql = "select c.name AS category_name, c.color AS category_color, SUM(e.amount) AS balance \
                  from entries e \
-                 INNER JOIN categories c ON (e.category_id = c.id) \
-                 group by category_name, category_color \
-                 order by balance desc";
-    const data = [];
+                 INNER JOIN categories c ON (e.category_id = c.id) ";
+
+    if (criteria != '') {
+      sql += ` WHERE ${criteria}`;
+    }
+
+    sql += " group by category_name, category_color \
+             order by balance desc";
+
+    const newData = [].concat(data);
 
     return this, this.database.db
-      .executeSql(sql, data)
+      .executeSql(sql, newData)
       .then((data: any) => {
         if (data.rows.length > 0) {
           let entries: any[] = [];
@@ -83,17 +89,23 @@ export class EntryDaoProvider {
   }
 
 
-  getByDate() {
-    const sql = "select c.name AS category_name, c.color AS category_color, SUM(e.amount) AS balance, \
+  getByDate(criteria = '', data = []) {
+    let sql = "select c.name AS category_name, c.color AS category_color, SUM(e.amount) AS balance, \
                         strftime('%Y-%m-%d', entry_at) as entry_date \
                  from entries e \
-                 INNER JOIN categories c ON (e.category_id = c.id) \
-                 group by entry_date \
-                 order by entry_date desc";
-    const data = [];
+                 INNER JOIN categories c ON (e.category_id = c.id)";
+
+    if (criteria != '') {
+      sql += ` WHERE ${criteria}`;
+    }
+
+    sql += " group by entry_date \
+              order by entry_date desc";
+
+    let newData = [].concat(data);
 
     return this, this.database.db
-      .executeSql(sql, data)
+      .executeSql(sql, newData)
       .then((data: any) => {
         if (data.rows.length > 0) {
           let entries: any[] = [];
@@ -109,14 +121,21 @@ export class EntryDaoProvider {
       .catch(e => console.error('erro ao getByCategory', JSON.stringify(e)));
   }
 
-  
 
-  getAll() {
-    const sql = "select * from entries order by entry_at";
-    const data = [];
+
+  getAll(criteria = '', data = []) {
+    let sql = "select * from entries";
+
+    if (criteria != '') {
+      sql += ` WHERE ${criteria}`;
+    }
+
+    sql += " order by entry_at";
+
+    const newData = [].concat(data);
 
     return this, this.database.db
-      .executeSql(sql, data)
+      .executeSql(sql, newData)
       .then((data: any) => {
         if (data.rows.length > 0) {
           let entries: any[] = [];
@@ -138,15 +157,15 @@ export class EntryDaoProvider {
 
     return this.database.db
       .executeSql(sql, data)
-        .then((data: any) => {
-          if (data.rows.length > 0) {
-            const item = data.rows.item(0);
-            return item.balance;
-          }
+      .then((data: any) => {
+        if (data.rows.length > 0) {
+          const item = data.rows.item(0);
+          return item.balance;
+        }
 
-          return 0;
-        })
-        .catch((e) => console.error('error on getBalance', JSON.stringify(e)));
+        return 0;
+      })
+      .catch((e) => console.error('error on getBalance', JSON.stringify(e)));
   }
 
 }

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { EntryDaoProvider } from '../entry-dao/entry-dao';
 import { CategoryDaoProvider } from '../category-dao/category-dao';
+import { DatabaseProvider } from '../database/database';
 
 @Injectable()
 export class AccountProvider {
@@ -19,12 +20,25 @@ export class AccountProvider {
     return this.entryDao.getAll();
   }
 
-  lastEntriesByCategory(){
-    return this.entryDao.getByCategory();
+  lastEntries(days) {
+    let criteria = 'entry_at >= ?';
+    let data =  [DatabaseProvider.now(days, true)]
+
+    return this.entryDao.getAll(criteria, data);
   }
 
-  lastEntriesByDate() {
-    return this.entryDao.getByDate();
+  lastEntriesByCategory(days){
+    let criteria = 'entry_at >= ?';
+    let data =  [DatabaseProvider.now(days, true)]
+
+    return this.entryDao.getByCategory(criteria, data);
+  }
+
+  lastEntriesByDate(days) {
+    let criteria = 'entry_at >= ?';
+    let data =  [DatabaseProvider.now(days, true)]
+
+    return this.entryDao.getByDate(criteria, data);
   }
 
   addEntry(amount, category_id) {

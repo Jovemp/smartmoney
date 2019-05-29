@@ -14,7 +14,7 @@ export class HomePage {
 
   entries = [];
   entriesByCategory = [];
-  entriesByDate = [10, 2, 3, 7, 5, 6, 7];
+  entriesByDate = [];
   currentBalance = 0;
 
   constructor(public navCtrl: NavController, public account: AccountProvider) {
@@ -37,7 +37,7 @@ export class HomePage {
   }
 
   private loadEntry() {
-    this.account.allEntries()
+    this.account.lastEntries(-7)
       .then((values: any) => {
         this.entries = values;
       })
@@ -45,12 +45,12 @@ export class HomePage {
   }
 
   private loadBalancesByDate() {
-    this.account.lastEntriesByDate()
+    this.account.lastEntriesByDate(-7)
       .then((data: any) => this.entriesByDate = data);
   }
 
   private loadBalancesByCategory(){
-    this.account.lastEntriesByCategory()
+    this.account.lastEntriesByCategory(-7)
       .then((data: any) => this.entriesByCategory = data);
   }
 

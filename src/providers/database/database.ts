@@ -49,9 +49,9 @@ export class DatabaseProvider {
         console.log('categories in db', data.rows.item(0).qtd);
         if (data.rows.item(0).qtd == 0) {
           this.dbConnection.sqlBatch([
-            ['insert into categories (name) values (?)', ['Categoria 1']],
-            ['insert into categories (name) values (?)', ['Categoria 2']],
-            ['insert into categories (name) values (?)', ['Categoria 3']]
+            ['insert into categories (name, color) values (?, ?)', ['Categoria 1', '#1abc9c']],
+            ['insert into categories (name, color) values (?, ?)', ['Categoria 2', '#9b59b6']],
+            ['insert into categories (name, color) values (?, ?)', ['Categoria 3', '#e67e22']]
           ])
             .then(() => console.log('default categories added'))
             .catch(e => console.error('error on create default categories', JSON.stringify(e)));
