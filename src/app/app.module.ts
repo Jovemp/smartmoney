@@ -5,6 +5,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 
 import { SQLite } from '@ionic-native/sqlite';
+import { DatePicker } from '@ionic-native/date-picker';
 
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
@@ -38,6 +39,7 @@ import { ComponentsModule } from '../components/components.module';
     StatusBar,
     SplashScreen,
     SQLite,
+    DatePicker, 
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     DatabaseProvider,
     EntryDaoProvider,
