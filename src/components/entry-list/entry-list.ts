@@ -8,7 +8,7 @@ import { ReportPage } from '../../pages/report/report';
 })
 export class EntryListComponent {
   @Input() entries = [];
-  @Input() showActions = [];
+  @Input() showActions = false;
 
   constructor(public navCtrl: NavController) {
   }

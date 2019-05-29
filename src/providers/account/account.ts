@@ -20,23 +20,57 @@ export class AccountProvider {
     return this.entryDao.getAll();
   }
 
-  lastEntries(days) {
+  lastEntries(days, categories = []) {
     let criteria = 'entry_at >= ?';
-    let data =  [DatabaseProvider.now(days, true)]
+
+    let data =  [DatabaseProvider.now(days, true)];
+
+    if (categories.length > 0) {
+      let criteriaCategories = [];
+
+      for (let categoryID of categories.map(item => item.id)) {
+        criteriaCategories.push('category_id = ?');
+        data.push(categoryID);
+      }
+
+      criteria += ` AND (${criteriaCategories.join(" OR ")})`;
+    }   
 
     return this.entryDao.getAll(criteria, data);
   }
 
-  lastEntriesByCategory(days){
+  lastEntriesByCategory(days, categories = []){
     let criteria = 'entry_at >= ?';
-    let data =  [DatabaseProvider.now(days, true)]
+    let data =  [DatabaseProvider.now(days, true)];
+
+    if (categories.length > 0) {
+      let criteriaCategories = [];
+
+      for (let categoryID of categories.map(item => item.id)) {
+        criteriaCategories.push('category_id = ?');
+        data.push(categoryID);
+      }
+
+      criteria += ` AND (${criteriaCategories.join(" OR ")})`;
+    }   
 
     return this.entryDao.getByCategory(criteria, data);
   }
 
-  lastEntriesByDate(days) {
+  lastEntriesByDate(days, categories = []) {
     let criteria = 'entry_at >= ?';
-    let data =  [DatabaseProvider.now(days, true)]
+    let data =  [DatabaseProvider.now(days, true)];
+
+    if (categories.length > 0) {
+      let criteriaCategories = [];
+
+      for (let categoryID of categories.map(item => item.id)) {
+        criteriaCategories.push('category_id = ?');
+        data.push(categoryID);
+      }
+
+      criteria += ` AND (${criteriaCategories.join(" OR ")})`;
+    }   
 
     return this.entryDao.getByDate(criteria, data);
   }
