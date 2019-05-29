@@ -1,4 +1,6 @@
 import { Component, Input } from '@angular/core';
+import { NavController } from 'ionic-angular';
+import { ReportPage } from '../../pages/report/report';
 
 @Component({
   selector: 'entry-list',
@@ -6,8 +8,13 @@ import { Component, Input } from '@angular/core';
 })
 export class EntryListComponent {
   @Input() entries = [];
+  @Input() showActions = [];
 
-  constructor() {
+  constructor(public navCtrl: NavController) {
+  }
+
+  showReport() {
+    this.navCtrl.push(ReportPage);
   }
 
 }

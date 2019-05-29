@@ -10,4 +10,11 @@
       <ion-note item-end>{{entry.amount | currency}}</ion-note>
     </button>
   </ion-list>
+  <ion-item *ngIf="showActions">
+    <ion-note>Últimos 7 dias</ion-note>
+    <button ion-button icon-start clear item-end (click)="showReport()">
+      <ion-icon name="analytics"></ion-icon>
+      Ver Mais
+    </button>
+  </ion-item>
 </ion-card>

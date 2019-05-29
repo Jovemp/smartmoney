@@ -14,7 +14,7 @@ import { DatabaseProvider } from '../providers/database/database';
 import { EntryDaoProvider } from '../providers/entry-dao/entry-dao';
 import { CategoryDaoProvider } from '../providers/category-dao/category-dao';
 import { AccountProvider } from '../providers/account/account';
-
+import { ReportPageModule } from '../pages/report/report.module';
 import { ComponentsModule } from '../components/components.module';
 
 @NgModule({
@@ -26,6 +26,7 @@ import { ComponentsModule } from '../components/components.module';
     BrowserModule,
     NewEntryPageModule, 
     ComponentsModule,
+    ReportPageModule,
     IonicModule.forRoot(MyApp)
   ],
   bootstrap: [IonicApp],

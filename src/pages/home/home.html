@@ -1,6 +1,8 @@
 <ion-content>
   <balance-panel [currentBalance]="currentBalance" (addEntry)="addEntry()"
                  [entries]="entriesByDate"></balance-panel>
-  <entry-summary [entries]="entriesByCategory"></entry-summary>
-  <entry-list [entries]="entries"></entry-list>
+  <entry-summary [entries]="entriesByCategory"
+                 [showActions]="true"></entry-summary>
+  <entry-list [entries]="lastEntries"
+              [showActions]="true"></entry-list>
 </ion-content>

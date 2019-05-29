@@ -12,7 +12,7 @@ import { Chart } from 'chart.js';
 })
 export class HomePage {
 
-  entries = [];
+  lastEntries = [];
   entriesByCategory = [];
   entriesByDate = [];
   currentBalance = 0;
@@ -39,7 +39,7 @@ export class HomePage {
   private loadEntry() {
     this.account.lastEntries(-7)
       .then((values: any) => {
-        this.entries = values;
+        this.lastEntries = values;
       })
       .catch(e => console.error('erro ao realizar select', JSON.stringify(e)));
   }
