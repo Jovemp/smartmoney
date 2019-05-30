@@ -118,4 +118,24 @@ export class DatabaseProvider {
     return res.slice(0, 3).join('-') + ' ' + res.slice(3).join(':');
   }
 
+  static date2bd(date) {
+    const dd = date.getDate();
+    const mm = date.getMonth() +1;
+    const y = date.getFullYear();
+    const h = date.getHours();
+    const m = date.getMinutes();
+    const s = date.getSeconds();
+
+    let res = [
+      '' + y,
+      ('0' + mm).slice(-2),
+      ('0' + dd).slice(-2),
+      ('0' + h).slice(-2),
+      ('0' + m).slice(-2),
+      ('0' + s).slice(-2)
+    ];
+
+    return res.slice(0, 3).join('-') + ' ' + res.slice(3).join(':');
+  }
+
 }

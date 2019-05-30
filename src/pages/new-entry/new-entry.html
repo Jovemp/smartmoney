@@ -23,10 +23,10 @@
       </p>
 
       <p text-center>
-        <button ion-fab color="dark" (click)="openDateModel()">
+        <button ion-fab [color]="this.entry['entry_at'] ? 'blue' : 'dark'" (click)="openDateModel()">
           <ion-icon name="calendar"></ion-icon>
         </button>
-        <button ion-fab color="dark" (click)="openDescriptionModal()">
+        <button ion-fab [color]="this.entry['description'] ? 'blue' : 'dark'" (click)="openDescriptionModal()">
           <ion-icon name="create"></ion-icon>
         </button>
         <button ion-fab [color]="this.entry['address'] ? 'blue' : 'dark'" (click)="openGeoLocationModal()">

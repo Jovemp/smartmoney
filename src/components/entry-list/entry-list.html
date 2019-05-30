@@ -1,8 +1,8 @@
 <ion-card>
   <ion-card-header>Útimos Lançamentos</ion-card-header>
   <ion-list>
-    <button *ngFor="let entry of entries" ion-item [ngClass]="{'show-line': entries.length > 1, 'green': true}">
-      <h2>Descrição {{entry.description}}</h2>
+    <button *ngFor="let entry of entries" (click)="editEntry(entry)" ion-item [ngClass]="{'show-line': entries.length > 1, 'green': true}">
+      <h2>{{entry.description}}</h2>
       <p>
         <ion-icon name="time"></ion-icon>{{entry.entry_at | date: 'short'}}
         <ion-icon name="pin" *ngIf="entry.address"></ion-icon>{{entry.address}}

@@ -1,15 +1,21 @@
 import { Injectable } from '@angular/core';
 import { DatabaseProvider } from '../database/database';
+import { DatePipe } from '@angular/common';
 
 @Injectable()
 export class EntryDaoProvider {
 
+  datePipe = new DatePipe('en_US');
+
   constructor(public database: DatabaseProvider) {
   }
 
-  insert(amount, category_id, latitude, longitude, address, image) {
-    const sqlInsert = "insert into entries (amount, entry_at, category_id, latitude, longitude, address, image) values (?, ?, ?, ?, ?, ?, ?)";
-    const dataInsert = [amount, DatabaseProvider.now(), category_id, latitude, longitude, address, image];
+  insert(amount, category_id, latitude, longitude, address, image, description, entryAt) {
+    const newEntryAt = entryAt ? DatabaseProvider.date2bd(entryAt) : DatabaseProvider.now();
+    const newDescription = description ? description : `Lançamento em ${this.datePipe.transform(newEntryAt)}`;
+
+    const sqlInsert = "insert into entries (amount, entry_at, category_id, latitude, longitude, address, image, description) values (?, ?, ?, ?, ?, ?, ?, ?)";
+    const dataInsert = [amount, newEntryAt, category_id, latitude, longitude, address, image, newDescription];
 
     return this.database.db.executeSql(sqlInsert, dataInsert)
       .catch(e => console.error('erro ao inserir', JSON.stringify(e)));

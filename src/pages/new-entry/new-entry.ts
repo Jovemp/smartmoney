@@ -6,6 +6,7 @@ import { AccountProvider } from '../../providers/account/account';
 import { Geolocation } from '@ionic-native/geolocation';
 import { NativeGeocoder, NativeGeocoderReverseResult, NativeGeocoderOptions } from '@ionic-native/native-geocoder';
 import { Camera, CameraOptions } from '@ionic-native/camera';
+import { DatePicker } from '@ionic-native/date-picker';
 
 
 @IonicPage()
@@ -29,7 +30,8 @@ export class NewEntryPage {
     public nativeGeocoder: NativeGeocoder,
     public alertCtrl: AlertController,
     public loadingCtrl: LoadingController,
-    public camera: Camera) {
+    public camera: Camera,
+    public dataPicker: DatePicker) {
     this.entryForm = builder.group({
       amount: new FormControl('', Validators.compose([Validators.required])),
       category_id: new FormControl('', Validators.required)
@@ -37,7 +39,8 @@ export class NewEntryPage {
   }
 
   ionViewDidLoad() {
-    this.loadData();
+    const entryId = this.navParams.get("entryId");
+    this.loadData(entryId);
   }
 
   submitForm() {
@@ -61,11 +64,18 @@ export class NewEntryPage {
     const latitude = this.entry['latitude'];
     const longitude = this.entry['longitude'];
     const address = this.entry['address'];
-    this.account.addEntry(amount, categoryId, latitude, longitude, address)
+    const image = this.entry['image'];
+    const description = this.entry['description'];
+    const entryAt = this.entry['entry_at'];
+    this.account.addEntry(amount, categoryId, latitude, longitude, address, image, description, entryAt)
       .then(() => console.log('insert realizado com sucesso'))
   }
 
-  loadData() {
+  loadData(entryId = null) {
+    if (entryId > 0) {
+      this.loadEntry(entryId);
+    }
+
     this.categoryDao.getAll()
       .then((categories: any[]) => {
         this.categories = categories;
@@ -73,6 +83,46 @@ export class NewEntryPage {
     this.account
       .loadBalance()
       .then((balance) => this.currentBalance = balance);
+  }
+
+  loadEntry(entryId) {
+    
+  }
+
+  openDateModel() {
+    this.dataPicker.show({
+      date: this.entry['entry_at'] ? new Date(this.entry['entry_at']) : new Date(),
+      mode: 'datetime',
+      titleText: 'Selecione uma data',
+      okText: 'Ok',
+      cancelText: 'Cancelar',
+      todayText: 'Hoje',
+      nowText: 'Agora',
+      locale: 'pt_BR',
+      is24Hour: true,
+      androidTheme: this.dataPicker.ANDROID_THEMES.THEME_DEVICE_DEFAULT_DARK
+    }).then(date => {
+      this.entry['entry_at'] = date;
+    });
+  }
+
+  openDescriptionModal() {
+    let prompt = this.alertCtrl.create({
+      title: 'Descrição'
+    });
+    prompt.addInput({
+      name: 'description',
+      placeholder: '',
+      value: this.entry['description']
+    });
+    prompt.addButton('Cancelar');
+    prompt.addButton({
+      text: 'OK',
+      handler: (data) => {
+        this.entry['description'] = data['description'];
+      }
+    })
+    prompt.present();
   }
 
   openCameraModal() {
