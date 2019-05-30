@@ -29,11 +29,11 @@
         <button ion-fab color="dark" (click)="openDescriptionModal()">
           <ion-icon name="create"></ion-icon>
         </button>
-        <button ion-fab color="dark" (click)="openGeoLocationModal()">
+        <button ion-fab [color]="this.entry['address'] ? 'blue' : 'dark'" (click)="openGeoLocationModal()">
           <ion-icon name="pin"></ion-icon>
         </button>
-        <button ion-fab color="dark" (click)="openCameraModal()">
-          <ion-icon name="attach"></ion-icon>
+        <button ion-fab [color]="this.entry['image'] ? 'blue' : 'dark'" (click)="openCameraModal()">
+          <ion-icon name="camera"></ion-icon>
         </button>
       </p>
     </form>

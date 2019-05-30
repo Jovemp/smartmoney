@@ -5,7 +5,7 @@
       <h2>Descrição {{entry.description}}</h2>
       <p>
         <ion-icon name="time"></ion-icon>{{entry.entry_at | date: 'short'}}
-        <ion-icon name="pin"></ion-icon>Rua das Graças, 21
+        <ion-icon name="pin" *ngIf="entry.address"></ion-icon>{{entry.address}}
       </p>
       <ion-note item-end>{{entry.amount | currency}}</ion-note>
     </button>

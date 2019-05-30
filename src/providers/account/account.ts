@@ -75,10 +75,10 @@ export class AccountProvider {
     return this.entryDao.getByDate(criteria, data);
   }
 
-  addEntry(amount, category_id) {
+  addEntry(amount, category_id, latitude = 0, longitude = 0, address = null, image = null) {
     this.balance += Number(amount);
 
-    return this.entryDao.insert(amount, category_id)
+    return this.entryDao.insert(amount, category_id, latitude, longitude, address, image)
       .then(() => {
         console.log('new entry added');
       })

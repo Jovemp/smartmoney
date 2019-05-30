@@ -35,7 +35,10 @@ export class DatabaseProvider {
 
     this.dbConnection.sqlBatch([
       ["create table if not exists categories(id integer primary key autoincrement, name varchar(255) not null, color character(9) default '#ffffff', is_default boolean);"],
-      ["create table if not exists entries (id integer primary key autoincrement, amount decimal not null, description text, entry_at datetime not null, is_init boolean, category_id integer);"]
+      ["create table if not exists entries (id integer primary key autoincrement, \
+          amount decimal not null, description text, entry_at datetime not null, \
+          latitude float, longitude float, address varchar(255), \
+          image varchar(255), is_init boolean, category_id integer);"]
     ])
       .then(() => console.log('tables created successfully'))
       .catch(e => console.error('error on create tables', JSON.stringify(e)));

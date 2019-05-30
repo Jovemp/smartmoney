@@ -6,6 +6,9 @@ import { StatusBar } from '@ionic-native/status-bar';
 
 import { SQLite } from '@ionic-native/sqlite';
 import { DatePicker } from '@ionic-native/date-picker';
+import { Geolocation } from '@ionic-native/geolocation';
+import { NativeGeocoder } from '@ionic-native/native-geocoder';
+import { Camera } from '@ionic-native/camera';
 
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
@@ -40,6 +43,9 @@ import { ComponentsModule } from '../components/components.module';
     SplashScreen,
     SQLite,
     DatePicker, 
+    Geolocation, 
+    NativeGeocoder,
+    Camera, 
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     DatabaseProvider,
     EntryDaoProvider,

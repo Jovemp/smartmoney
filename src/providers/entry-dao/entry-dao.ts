@@ -7,9 +7,9 @@ export class EntryDaoProvider {
   constructor(public database: DatabaseProvider) {
   }
 
-  insert(amount, category_id) {
-    const sqlInsert = "insert into entries (amount, entry_at, category_id) values (?, ?, ?)";
-    const dataInsert = [amount, DatabaseProvider.now(), category_id];
+  insert(amount, category_id, latitude, longitude, address, image) {
+    const sqlInsert = "insert into entries (amount, entry_at, category_id, latitude, longitude, address, image) values (?, ?, ?, ?, ?, ?, ?)";
+    const dataInsert = [amount, DatabaseProvider.now(), category_id, latitude, longitude, address, image];
 
     return this.database.db.executeSql(sqlInsert, dataInsert)
       .catch(e => console.error('erro ao inserir', JSON.stringify(e)));
