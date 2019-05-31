@@ -75,7 +75,7 @@ export class DoughnutChartComponent {
 
           for (let i = 0; i < item.data.length; i++) {
             //let value = currencyPipe.transform(item.data[i]);
-            let value = '$' + item.data[i];
+            let value = '$' + parseFloat(item.data[i]).toFixed(2);
 
             legendHtml.push('<li>');
             legendHtml.push(`<span class="chart-legend-bullet" style="color:${item.backgroundColor[i]}"></span>`);

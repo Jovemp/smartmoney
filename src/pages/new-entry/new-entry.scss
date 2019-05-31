@@ -30,6 +30,14 @@ page-new-entry {
         select {
             text-align-last:center;
         }
+
+        button.operator {
+            border-radius: 5px;
+            font-size: 3rem;
+            width: 100%;
+            padding: 15px 15px;
+            margin: 0;
+        }
     
         button[ion-fab] {
             display: inline-block !important;
@@ -42,7 +50,7 @@ page-new-entry {
             }
             
             ion-icon {
-                font-size: 4rem;
+                font-size: 3rem;
             }
         }
 

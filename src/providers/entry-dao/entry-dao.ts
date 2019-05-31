@@ -21,9 +21,11 @@ export class EntryDaoProvider {
       .catch(e => console.error('erro ao inserir', JSON.stringify(e)));
   }
 
-  update(entry, id) {
-    const sql = "update entries amount = ?, category_id = ? where id = ?";
-    const data = [entry['amount'], entry['category_id'], id]
+  update(amount, category_id, latitude, longitude, address, image, description, entryAt, id) {
+    const sql = "update entries \
+                 set amount = ?, category_id = ?, entry_at = ?, description = ?, latitude = ?, longitude = ?, address = ?, image = ? \
+                 where id = ?";
+    const data = [amount, category_id, entryAt, description, latitude, longitude, address, image, id]
 
     return this.database.db
       .executeSql(sql, data)
@@ -64,7 +66,7 @@ export class EntryDaoProvider {
   }
 
   getByCategory(criteria = '', data = []) {
-    let sql = "select c.name AS category_name, c.color AS category_color, SUM(e.amount) AS balance \
+    let sql = "select c.name AS category_name, c.color AS category_color, ABS(SUM(e.amount)) AS balance \
                  from entries e \
                  INNER JOIN categories c ON (e.category_id = c.id) ";
 

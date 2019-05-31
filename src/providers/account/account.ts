@@ -84,6 +84,26 @@ export class AccountProvider {
       })
   }
 
+  updateEntry(amount, category_id, latitude = 0, longitude = 0, address = null, image = null, description = null, entryAt = null, id) {
+    this.balance += Number(amount);
+
+    return this.entryDao.update(amount, category_id, latitude, longitude, address, image, description, entryAt, id)
+      .then(() => {
+        console.log('new entry added');
+      })
+  }
+
+  deleteEntry(entryId) {
+    return this.entryDao.delete(entryId)
+      .then(() => {
+        this.loadBalance();
+      });
+  }
+
+  getEntry(entryId) {
+    return this.entryDao.get(entryId);
+  }
+
   loadBalance() {
     console.log('load balance');
 

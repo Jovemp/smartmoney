@@ -3,8 +3,16 @@
     <balance-label [currentBalance]="currentBalance"></balance-label>
     <form [formGroup]="entryForm">
       <p>
-        <input currencyMask [options]="{ prefix: '$ ', thousands: '.', decimal: ',' }" type="tel" name="amount"
-          formControlName="amount" [(ngModel)]="entry.amount" />
+        <ion-row>
+          <ion-col col-3>
+            <button ion-button color="light" class="operator" (click)="changeOperator()" clear
+              large>{{ operatorButtonLavel }}</button>
+          </ion-col>
+          <ion-col>
+            <input currencyMask [options]="{ prefix: '', thousands: '.', decimal: ',' }" type="tel" name="amount"
+              formControlName="amount" [(ngModel)]="entry.amount" />
+          </ion-col>
+        </ion-row>
       </p>
 
       <p class="error" *ngIf="entryForm.controls.amount.hasError('required') && entryForm.controls.amount.touched">
@@ -23,6 +31,9 @@
       </p>
 
       <p text-center>
+        <button ion-fab color="danger" *ngIf="entry['id'] > 0" (click)="deleteEntry(entry['id'])">
+          <ion-icon name="trash"></ion-icon>
+        </button>
         <button ion-fab [color]="this.entry['entry_at'] ? 'blue' : 'dark'" (click)="openDateModel()">
           <ion-icon name="calendar"></ion-icon>
         </button>
@@ -42,7 +53,7 @@
 <ion-footer no-border>
   <ion-toolbar text-center>
     <button ion-button color="secondary" [disabled]="!entryForm.valid" (click)="submitForm()" outline round
-      large>Debitar</button>
+      large>{{ submitButtonLabel }}</button>
     <button ion-button color="light" (click)="goBack()" clear round large>Cancelar</button>
   </ion-toolbar>
 </ion-footer>

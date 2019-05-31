@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController, LoadingController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController, LoadingController, ModalController } from 'ionic-angular';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { CategoryDaoProvider } from '../../providers/category-dao/category-dao';
 import { AccountProvider } from '../../providers/account/account';
@@ -7,6 +7,7 @@ import { Geolocation } from '@ionic-native/geolocation';
 import { NativeGeocoder, NativeGeocoderReverseResult, NativeGeocoderOptions } from '@ionic-native/native-geocoder';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { DatePicker } from '@ionic-native/date-picker';
+import { ImagePreviewPage } from '../image-preview/image-preview';
 
 
 @IonicPage()
@@ -19,7 +20,13 @@ export class NewEntryPage {
   entryForm: FormGroup;
   currentBalance: number = 0;
 
-  entry = {}
+  entry = {};
+  operatorButtonLavel = '-R$';
+  submitButtonLabel = 'Debitar';
+  operation = -1;
+  editMode = false;
+  isChanged = false;
+
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
@@ -31,7 +38,8 @@ export class NewEntryPage {
     public alertCtrl: AlertController,
     public loadingCtrl: LoadingController,
     public camera: Camera,
-    public dataPicker: DatePicker) {
+    public dataPicker: DatePicker,
+    public modalCtrl: ModalController) {
     this.entryForm = builder.group({
       amount: new FormControl('', Validators.compose([Validators.required])),
       category_id: new FormControl('', Validators.required)
@@ -47,19 +55,64 @@ export class NewEntryPage {
     console.log('Submit Form');
     console.log(JSON.stringify(this.entry));
     // rotina do bd
-    this.insertBD();
+    if (this.entry['id'] > 0) {
+      this.updateDB();
+    } else {
+      this.insertBD();
+    }
+    this.isChanged = false;
     this.goBack();
   }
 
+  changeOperator() {
+    this.operation *= -1;
+    this.loadLabels();
+    this.detectChanges();
+  }
+
+  private loadLabels() {
+    if (this.operation < 0) {
+      this.operatorButtonLavel = '-R$';
+      this.submitButtonLabel = (this.editMode) ? 'Salvar' : 'Debitar';
+    } else {
+      this.operatorButtonLavel = 'R$';
+      this.submitButtonLabel = (this.editMode) ? 'Salvar' : 'Creditar';
+    }
+  }
+
+  private detectChanges() {
+    this.isChanged = true;
+  }
+
   goBack() {
-    console.log('Go Back');
-    // sair sem fazer nada
-    this.navCtrl.pop();
+    if (this.isChanged) {
+      let alert = this.alertCtrl.create({
+        title: 'Deseja realmente sair?',
+        subTitle: 'Há informação alterada que não foi salva.',
+        cssClass: 'custom-alert',
+        buttons: [
+          {
+            text: 'Voltar',
+            role: 'cancel'
+          },
+          {
+            text: 'Sim',
+            handler: () => {
+              this.navCtrl.pop();
+            }
+          }
+        ]
+      });
+      alert.present();
+    } else {
+      // sair sem fazer nada
+      this.navCtrl.pop();
+    }
   }
 
   insertBD() {
     console.log('Inicio da gravação do BD');
-    const amount = this.entry['amount'];
+    const amount = this.entry['amount'] * this.operation;
     const categoryId = this.entry['category_id'];
     const latitude = this.entry['latitude'];
     const longitude = this.entry['longitude'];
@@ -68,7 +121,27 @@ export class NewEntryPage {
     const description = this.entry['description'];
     const entryAt = this.entry['entry_at'];
     this.account.addEntry(amount, categoryId, latitude, longitude, address, image, description, entryAt)
-      .then(() => console.log('insert realizado com sucesso'))
+      .then(() => {
+        console.log('insert realizado com sucesso')
+      })
+  }
+
+  updateDB() {
+    const id = this.entry['id'];
+    const amount = this.entry['amount'] * this.operation;;
+    const categoryId = this.entry['category_id'];
+    const latitude = this.entry['latitude'];
+    const longitude = this.entry['longitude'];
+    const address = this.entry['address'];
+    const image = this.entry['image'];
+    const description = this.entry['description'];
+    const entryAt = this.entry['entry_at'];
+
+    this.account.updateEntry(amount, categoryId, latitude, longitude, address, image, description, entryAt, id)
+      .then(() => {
+        console.log('insert realizado com sucesso');
+        this.loadBalance();
+      });
   }
 
   loadData(entryId = null) {
@@ -80,13 +153,50 @@ export class NewEntryPage {
       .then((categories: any[]) => {
         this.categories = categories;
       });
+    this.loadBalance();
+  }
+
+  loadBalance() {
     this.account
       .loadBalance()
       .then((balance) => this.currentBalance = balance);
   }
 
   loadEntry(entryId) {
-    
+    this.editMode = true;
+    this.account.getEntry(entryId)
+      .then((entry) => {
+
+        this.operation = (entry['amount'] < 0) ? -1 : 1;
+        this.entry = entry;
+
+        if (this.operation < 0) {
+          this.entry['amount'] = this.entry['amount'] * -1;
+        };
+
+        this.loadLabels();
+      })
+  }
+
+  deleteEntry(entryId) {
+    let alert = this.alertCtrl.create({
+      title: 'Deseja apagar?',
+      cssClass: 'custom-alert',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel'
+        },
+        {
+          text: 'Ok',
+          handler: () => {
+            this.account.deleteEntry(entryId);
+            this.goBack();
+          }
+        }
+      ]
+    });
+    alert.present();
   }
 
   openDateModel() {
@@ -103,6 +213,7 @@ export class NewEntryPage {
       androidTheme: this.dataPicker.ANDROID_THEMES.THEME_DEVICE_DEFAULT_DARK
     }).then(date => {
       this.entry['entry_at'] = date;
+      this.detectChanges();
     });
   }
 
@@ -120,36 +231,51 @@ export class NewEntryPage {
       text: 'OK',
       handler: (data) => {
         this.entry['description'] = data['description'];
+        this.detectChanges();
       }
     })
     prompt.present();
   }
 
   openCameraModal() {
-    const options: CameraOptions = {
-      quality: 50,
-      correctOrientation: true,
-      allowEdit: true,
-      saveToPhotoAlbum: true,
-      destinationType: this.camera.DestinationType.FILE_URI,
-      encodingType: this.camera.EncodingType.JPEG,
-      mediaType: this.camera.MediaType.PICTURE
-    }
 
-    this.camera.getPicture(options).then((imageData) => {
-      // imageData is either a base64 encoded string or a file URI
-      // If it's base64 (DATA_URL):
-      let base64Image = 'data:image/jpeg;base64,' + imageData;
+    if (this.editMode && this.entry['image']) {
+      let imagePreviewModal = this.modalCtrl.create(ImagePreviewPage, { image: this.entry['image']});
 
-      this.entry['image'] = base64Image;
-    }, (err) => {
-      let alert = this.alertCtrl.create({
-        title: 'Erro de câmera',
-        subTitle: `Não foi possivel abrir sua câmera, por favor, verifique se já deu permissão.`,
-        buttons: ['OK']
+      imagePreviewModal.onDidDismiss(data => {
+        if (data) {
+          this.entry['image'] = data.image;
+          this.detectChanges();
+        }
       });
-      alert.present();
-    });
+      imagePreviewModal.present();
+    } else {
+      const options: CameraOptions = {
+        quality: 50,
+        correctOrientation: true,
+        allowEdit: true,
+        saveToPhotoAlbum: true,
+        destinationType: this.camera.DestinationType.FILE_URI,
+        encodingType: this.camera.EncodingType.JPEG,
+        mediaType: this.camera.MediaType.PICTURE
+      }
+
+      this.camera.getPicture(options).then((imageData) => {
+        // imageData is either a base64 encoded string or a file URI
+        // If it's base64 (DATA_URL):
+        //let base64Image = 'data:image/jpeg;base64,' + imageData;
+
+        this.entry['image'] = imageData;
+        this.detectChanges();
+      }, (err) => {
+        let alert = this.alertCtrl.create({
+          title: 'Erro de câmera',
+          subTitle: `Não foi possivel abrir sua câmera, por favor, verifique se já deu permissão.`,
+          buttons: ['OK']
+        });
+        alert.present();
+      });
+    }
   }
 
   openGeoLocationModal() {
@@ -191,6 +317,7 @@ export class NewEntryPage {
                 this.entry['latitude'] = latitude;
                 this.entry['longitude'] = longitude;
                 this.entry['address'] = completeAddress;
+                this.detectChanges();
               }
             })
             alert.present();
@@ -203,8 +330,17 @@ export class NewEntryPage {
             alert.present();
           }
         })
-        .catch((error: any) => console.log(error));
+        .catch((error: any) => {
+          loading.dismiss();
+          let alert = this.alertCtrl.create({
+            title: 'Erro de localização',
+            subTitle: `Não foi possivel encontrar o endereço desta localização.`,
+            buttons: ['OK']
+          });
+          alert.present();
+        });
     }).catch((error) => {
+      loading.dismiss();
       let alert = this.alertCtrl.create({
         title: 'Erro',
         subTitle: `Erro ao capturar a localização, por favor, certifique-se que o GPS esta ligado.`,

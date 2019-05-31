@@ -1,0 +1,12 @@
+<ion-content padding>
+  <img [src]="image" />
+</ion-content>
+<ion-footer no-border>
+  <p text-center>
+    <button ion-fab color="dark" (click)="dismiss()"><ion-icon name="close"></ion-icon></button>
+    <button ion-fab color="blue" (click)="openCameraModal()"><ion-icon name="camera"></ion-icon></button>
+    <button ion-fab color="secondary" (click)="save()" *ngIf="newImage" (click)="save()"><ion-icon name="checkmark-circle"></ion-icon></button>
+  </p>
+</ion-footer>
+
+
