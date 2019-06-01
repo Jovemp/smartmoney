@@ -5,7 +5,7 @@ import { DatePipe } from '@angular/common';
 @Injectable()
 export class EntryDaoProvider {
 
-  datePipe = new DatePipe('en_US');
+  datePipe = new DatePipe('pt_BR');
 
   constructor(public database: DatabaseProvider) {
   }

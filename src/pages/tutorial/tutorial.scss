@@ -1,0 +1,13 @@
+page-tutorial {
+    .logo {
+        margin: 0 0 25px 0;
+    }
+
+    h1, h2, h3, p {
+        color: color($colors, white);
+    }
+
+    h1.title {
+        font-size: 3rem;
+    }
+}

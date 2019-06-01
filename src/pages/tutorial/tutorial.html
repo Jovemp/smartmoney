@@ -1,0 +1,97 @@
+<ion-content padding>
+  <ion-slides pager>
+
+    <ion-slide>
+      <ion-grid>
+        <ion-row justify-content-center>
+          <ion-col col-4>
+            <img class="logo" src="./assets/img/logo-white.svg" alt="Smart Money" />
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <h1 class="title">Olá</h1>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <h3>Para começar a usar o Smart Money você precisa fazer duas coisas bem simples: informar o saldo e depois
+              conceder uma permissão. Vamos lá?</h3>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col>
+            <button ion-button outline round large icon-right color="secondary" (click)="goToSlide(1)">
+              Continuar
+              <ion-icon name="arrow-forward"></ion-icon>
+            </button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-slide>
+    <ion-slide>
+        <ion-grid>
+          <ion-row>
+            <ion-col>
+              <h1 class="title">Informe seu saldo</h1>
+            </ion-col>
+          </ion-row>
+  
+          <ion-row>
+            <ion-col>
+              <form [formGroup]="entryForm">
+                <p>
+                  <input type="tel"
+                    name="value"
+                    formControlName="amount"
+                    [(ngModel)]="entry.value"
+                    required
+                    currencyMask [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',' }"/>
+                </p>
+                <p class="error"
+                  *ngIf="entryForm.controls.amount.hasError('required') && entryForm.controls.amount.touched">
+                  <span>O campo de valor é obrigatório!</span>
+                </p>
+  
+                <p>Seu saldo será usado para iniciar os registros ;)</p>
+              </form>
+            </ion-col>
+          </ion-row>
+  
+          <ion-row>
+            <ion-col>
+              <button ion-button outline round large icon-right color="secondary" [disabled]="!entryForm.valid" (click)="submitForm()">
+                Continuar
+                <ion-icon name="arrow-forward"></ion-icon>
+              </button>
+            </ion-col>
+          </ion-row>
+  
+        </ion-grid>
+      </ion-slide>
+  
+      <ion-slide>
+        <ion-grid>
+          <ion-row>
+            <ion-col>
+              <h1 class="title">Câmera e GPS</h1>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col>
+              <h3>Para que o Smart Money possa tirar fotos de comprovantes e marca o local da compra, é preciso que você dê permissão de acesso a estes dispositivos. Isso não será compartilhado.</h3>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col>
+              <button ion-button outline round large icon-right color="secondary" (click)="grantPermissions()">
+                Finalizar
+                <ion-icon name="checkmark"></ion-icon>
+              </button>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-slide>  
+  </ion-slides>
+</ion-content>

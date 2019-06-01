@@ -7,7 +7,7 @@
         <ion-icon name="time"></ion-icon>{{entry.entry_at | date: 'short'}}
         <ion-icon name="pin" *ngIf="entry.address"></ion-icon>{{entry.address}}
       </p>
-      <ion-note item-end>{{entry.amount | currency}}</ion-note>
+      <ion-note item-end>{{entry.amount | currency: 'R$'}}</ion-note>
     </button>
   </ion-list>
   <ion-item *ngIf="showActions">

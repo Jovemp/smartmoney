@@ -23,7 +23,7 @@ export class ReportPage {
   date = new Date();
   days = -7;
 
-  datePipe = new DatePipe('en_US');
+  datePipe = new DatePipe('pt_BR');
 
   dateButtonLabel = `Últimos ${this.days * -1} dias`;
   categoryButtonLabel = "Todas Categorias";
