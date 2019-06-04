@@ -3,6 +3,7 @@ import { ErrorHandler, NgModule, LOCALE_ID } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
+import { IonicStorageModule } from '@ionic/storage';
 
 import { registerLocaleData } from '@angular/common';
 import localePt from '@angular/common/locales/pt';
@@ -26,8 +27,7 @@ import { CategoryDaoProvider } from '../providers/category-dao/category-dao';
 import { AccountProvider } from '../providers/account/account';
 import { ReportPageModule } from '../pages/report/report.module';
 import { ComponentsModule } from '../components/components.module';
-
-
+import { ConfigProvider } from '../providers/config/config';
 registerLocaleData(localePt, 'pt', localePtExtra);
 
 @NgModule({
@@ -42,6 +42,7 @@ registerLocaleData(localePt, 'pt', localePtExtra);
     ReportPageModule,
     ImagePreviewPageModule,
     TutorialPageModule,
+    IonicStorageModule.forRoot(),
     IonicModule.forRoot(MyApp)
   ],
   bootstrap: [IonicApp],
@@ -50,6 +51,7 @@ registerLocaleData(localePt, 'pt', localePtExtra);
     HomePage
   ],
   providers: [
+    ConfigProvider,
     StatusBar,
     SplashScreen,
     SQLite,

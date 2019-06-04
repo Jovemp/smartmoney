@@ -115,6 +115,15 @@ export class AccountProvider {
         });
   }
 
+  init(amount) {
+    this.balance = amount;
+
+    this.entryDao.deleteAll()
+      .then(() => {
+        this.entryDao.insert(amount, null, null, null, null, null, 'Saldo inicial.', null, 1);
+      })
+  }
+
   
 
 

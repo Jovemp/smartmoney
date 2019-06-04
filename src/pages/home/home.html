@@ -1,8 +1,11 @@
-<ion-content>
-  <balance-panel [currentBalance]="currentBalance" (addEntry)="addEntry()"
+<balance-panel [currentBalance]="currentBalance" (addEntry)="addEntry()"
                  [entries]="entriesByDate"></balance-panel>
-  <entry-summary [entries]="entriesByCategory"
+<ion-content (ionScroll)="onScroll($event)">
+  <div class="home-container">
+    <entry-summary [entries]="entriesByCategory"
                  [showActions]="true"></entry-summary>
-  <entry-list [entries]="lastEntries"
+    <entry-list [entries]="lastEntries"
               [showActions]="true"></entry-list>
+  </div>
+  
 </ion-content>

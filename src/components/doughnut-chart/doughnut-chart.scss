@@ -67,3 +67,13 @@ doughnut-chart {
         }
       }
 }
+
+@media all and (orientation: landscape) {
+  .chart-wrapper {
+    padding-right: 15px !important;
+    canvas {
+      width: 220px !important;
+      height: 220px !important;
+    }
+  }
+}

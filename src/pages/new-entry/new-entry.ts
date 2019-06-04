@@ -67,6 +67,7 @@ export class NewEntryPage {
   changeOperator() {
     this.operation *= -1;
     this.loadLabels();
+    this.loadCategories();
     this.detectChanges();
   }
 
@@ -147,13 +148,24 @@ export class NewEntryPage {
   loadData(entryId = null) {
     if (entryId > 0) {
       this.loadEntry(entryId);
-    }
+    } else {
+      this.loadCategories();
+    }    
+    this.loadBalance();
+  }
 
-    this.categoryDao.getAll()
+  loadCategories() {
+    if (this.operation < 0) {
+      this.categoryDao.getDebit()
       .then((categories: any[]) => {
         this.categories = categories;
       });
-    this.loadBalance();
+    } else {
+      this.categoryDao.getCredit()
+      .then((categories: any[]) => {
+        this.categories = categories;
+      });
+    }    
   }
 
   loadBalance() {
@@ -175,6 +187,7 @@ export class NewEntryPage {
         };
 
         this.loadLabels();
+        this.loadCategories();
       })
   }
 

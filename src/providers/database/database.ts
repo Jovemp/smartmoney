@@ -34,11 +34,16 @@ export class DatabaseProvider {
     console.log('creating tables');
 
     this.dbConnection.sqlBatch([
-      ["create table if not exists categories(id integer primary key autoincrement, name varchar(255) not null, color character(9) default '#ffffff', is_default boolean);"],
+      ["create table if not exists categories(id integer primary key autoincrement, \
+               name varchar(255) not null, \
+               color character(9) default '#ffffff', \
+               is_default boolean, \
+               is_credit integer, \
+               is_debit integer);"],
       ["create table if not exists entries (id integer primary key autoincrement, \
           amount decimal not null, description text, entry_at datetime not null, \
           latitude float, longitude float, address varchar(255), \
-          image varchar(255), is_init boolean, category_id integer);"]
+          image varchar(255), is_init integer, category_id integer);"]
     ])
       .then(() => console.log('tables created successfully'))
       .catch(e => console.error('error on create tables', JSON.stringify(e)));
@@ -52,9 +57,24 @@ export class DatabaseProvider {
         console.log('categories in db', data.rows.item(0).qtd);
         if (data.rows.item(0).qtd == 0) {
           this.dbConnection.sqlBatch([
-            ['insert into categories (name, color) values (?, ?)', ['Categoria 1', '#1abc9c']],
-            ['insert into categories (name, color) values (?, ?)', ['Categoria 2', '#9b59b6']],
-            ['insert into categories (name, color) values (?, ?)', ['Categoria 3', '#e67e22']]
+            ['INSERT INTO categories (name, color, is_debit) values (?, ?, ?)', ['Alimentação', '#1abc9c', 1]],            // turquese
+            ['INSERT INTO categories (name, color, is_debit) values (?, ?, ?)', ['Restaurantes e Bares', '#2ecc71', 1]],   // green
+            ['INSERT INTO categories (name, color, is_debit) values (?, ?, ?)', ['Casa', '#3498db', 1]],                   // blue
+            ['INSERT INTO categories (name, color, is_debit) values (?, ?, ?)', ['Compras', '#9b59b6', 1]],                // violet
+            ['INSERT INTO categories (name, color, is_debit) values (?, ?, ?)', ['Cuidados Pessoais', '#f1c40f', 1]],      // yellow
+            ['INSERT INTO categories (name, color, is_debit) values (?, ?, ?)', ['Dívidas e Empréstimos', '#f39c12', 1]],  // yellow-dark
+            ['INSERT INTO categories (name, color, is_debit) values (?, ?, ?)', ['Educação', '#e67e22', 1]],               // orange
+            ['INSERT INTO categories (name, color, is_debit) values (?, ?, ?)', ['Família e Filhos', '#d35400', 1]],       // orange-dark
+            ['INSERT INTO categories (name, color, is_debit) values (?, ?, ?)', ['Impostos e Taxas', '#e74c3c', 1]],       // red
+            ['INSERT INTO categories (name, color, is_debit) values (?, ?, ?)', ['Investimentos', '#c0392b', 1]],          // red-dark
+            ['INSERT INTO categories (name, color, is_debit) values (?, ?, ?)', ['Lazer', '#ecf0f1', 1]],                  // champagne
+            ['INSERT INTO categories (name, color, is_debit) values (?, ?, ?)', ['Mercado', '#bdc3c7', 1]],                // champagne-dark
+            ['INSERT INTO categories (name, color, is_debit) values (?, ?, ?)', ['Outras Despesas', '#95a5a6', 1]],        // metal
+
+            ['INSERT INTO categories (name, color, is_credit) values (?, ?, ?)', ['Empréstimos', '#273c75', 1]],           // blue marine
+            ['INSERT INTO categories (name, color, is_credit) values (?, ?, ?)', ['Investimentos', '#4cd137', 1]],         // green-sea
+            ['INSERT INTO categories (name, color, is_credit) values (?, ?, ?)', ['Salário', '#487eb0', 1]],               // seabrook
+            ['INSERT INTO categories (name, color, is_credit) values (?, ?, ?)', ['Outras Receitas', '#8c7ae6', 1]]       // matt purple
           ])
             .then(() => console.log('default categories added'))
             .catch(e => console.error('error on create default categories', JSON.stringify(e)));

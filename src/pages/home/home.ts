@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { Component, ViewChild } from '@angular/core';
+import { NavController, Events, Content } from 'ionic-angular';
 
 import { NewEntryPage } from '../new-entry/new-entry';
 import { AccountProvider } from '../../providers/account/account';
@@ -11,17 +11,24 @@ import { Chart } from 'chart.js';
   templateUrl: 'home.html'
 })
 export class HomePage {
+  @ViewChild(Content) content: Content;
 
   lastEntries = [];
   entriesByCategory = [];
   entriesByDate = [];
   currentBalance = 0;
 
-  constructor(public navCtrl: NavController, public account: AccountProvider) {
+  constructor(public navCtrl: NavController, 
+    public account: AccountProvider,
+    public events: Events) {
   }
 
   ionViewDidEnter() {
     this.loadData();
+  }
+
+  onScroll(event) {
+    this.events.publish('app:scroll', this.content.scrollTop);
   }
 
   private loadData() {

@@ -5,7 +5,7 @@ balance-panel {
         height: 30vh;
         padding: 3rem 0 0;
 
-        position: relative;
+        position: fixed;
         top: 0;
         left: 0;
         right: 0;
@@ -41,4 +41,15 @@ balance-panel {
             top: 25.5vh;
         }
     }
+}
+
+@media all and (orientation: landscape) {
+    .balance-panel-container {
+        height: 50vh !important;
+    }
+
+    ion-fab[top]{
+        top: 42vh !important;
+    }
+
 }
